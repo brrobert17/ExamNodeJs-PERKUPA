@@ -1,6 +1,7 @@
 <script>
     import toast, {Toaster} from "svelte-french-toast";
     import {navigate} from "svelte-navigator";
+    import Navbar from "../components/Navbar.svelte";
 
     let user = {
         username: "",
@@ -25,28 +26,28 @@
         // // }
     }
 </script>
-
-<a href="/">Home</a>
-<div class="c-div">
-    <div class="login-div">
-        <h1 class="login-title">Register</h1>
-        <div class="form-div">
-            <form>
+<div class="page-content">
+    <div class="c-div">
+        <div class="login-div">
+            <h1 class="login-title">Register</h1>
+            <div class="form-div">
+                <form>
+                    <div>
+                        <label for="un">username</label>
+                        <input id="un" bind:value={user.username} type="text">
+                    </div>
+                    <div>
+                        <label for="pw">password</label>
+                        <input id="pw" bind:value={user.password} type="password">
+                    </div>
+                </form>
                 <div>
-                    <label for="un">username</label>
-                    <input id="un" bind:value={user.username} type="text">
+                    <button class="login-button" on:click={handleRegister}>
+                        Register
+                    </button>
                 </div>
-                <div>
-                    <label for="pw">password</label>
-                    <input id="pw" bind:value={user.password} type="password">
-                </div>
-            </form>
-            <div>
-                <button class="login-button" on:click={handleRegister}>
-                    Register
-                </button>
             </div>
         </div>
     </div>
+    <Toaster/>
 </div>
-<Toaster/>

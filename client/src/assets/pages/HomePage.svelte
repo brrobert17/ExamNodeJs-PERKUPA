@@ -12,7 +12,9 @@
         test = response.data.data;
     });
 
+
 </script>
-<Navbar/>
-<h1>Home</h1>
-<h5>{test}</h5>
+<div class="page-content">
+    <h1>Home</h1>
+    <h5>{test}</h5>
+</div>

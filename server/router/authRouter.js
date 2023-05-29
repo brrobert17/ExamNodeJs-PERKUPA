@@ -30,6 +30,7 @@ router.post("/login", async (req, res) => {
                 expiresIn: '5m'
             });
             const {password, ...userNoPass} = user;
+            console.log(userNoPass);
             res.send({
                 user: userNoPass,
                 token: token
@@ -40,12 +41,16 @@ router.post("/login", async (req, res) => {
 
 router.get("/auth", (req, res) => {
     const token = req.headers['authorization'];
-    if (token == null) {
-        return res.status(418).send({error: "authentication failed; no token"});
+    if (!token) {
+        return res.status(401).send({error: "no token"});
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
             if (err) {
-                return res.status(418).send({error: err});
+                if(err.name === 'TokenExpiredError') {
+                    return res.status(498).send({error: err});
+                } else {
+                    return res.status(418).send({error: err});
+                }
             } else {
                 const {iat, exp, ...cleanUser} = user;
                 const token = jwt.sign(cleanUser, process.env.ACCESS_TOKEN_SECRET, {
