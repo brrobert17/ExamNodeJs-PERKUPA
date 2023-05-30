@@ -1,18 +1,18 @@
 import {Router} from "express";
 import jwt from 'jsonwebtoken';
-import {getUserIfExists, checkUserCredentials, registerUser} from "../service/mongoDBAuthService.js";
+import {getUserIfExists, checkUserCredentials, registerUser, refreshUser} from "../service/mongoDBAuthService.js";
+import {readDocById} from "../service/mongoDBService.js";
 
 const router = Router();
 
 router.post("/register", async (req, res) => {
-    console.log("req.body: " + req.body);
-    const user = await getUserIfExists(req.body.user.username);
+    const user = await getUserIfExists(req.body.user);
     if (user) {
         res.send({error: `the username '${user.username}' is already in use`});
     } else {
-        const result = await registerUser(req.body.user);
+        const result = await registerUser(req.body);
         res.send({
-            user: req.body.user,
+            user: req.body,
             result: result
         });
     }
@@ -44,9 +44,9 @@ router.get("/auth", (req, res) => {
     if (!token) {
         return res.status(401).send({error: "no token"});
     } else {
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
             if (err) {
-                if(err.name === 'TokenExpiredError') {
+                if (err.name === 'TokenExpiredError') {
                     return res.status(498).send({error: err});
                 } else {
                     return res.status(418).send({error: err});
@@ -56,7 +56,9 @@ router.get("/auth", (req, res) => {
                 const token = jwt.sign(cleanUser, process.env.ACCESS_TOKEN_SECRET, {
                     expiresIn: '5m'
                 });
-                const {password, ...userNoPass} = user;
+                const freshUser = await refreshUser(user._id);
+                console.log(freshUser);
+                const {password, ...userNoPass} = freshUser;
                 res.send({
                     user: userNoPass,
                     token: token

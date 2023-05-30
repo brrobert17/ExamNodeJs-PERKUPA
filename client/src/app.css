@@ -28,12 +28,21 @@ a:hover {
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 600px;
   min-height: 100vh;
 }
 
 .page-content {
-  margin: 1vh 2vw 3vh 3vw;
+  margin: 1vh 3vw 3vh 3vw;
+}
+
+button:hover {
+  background-color: #7082f1;
+  cursor: pointer;
+}
+
+input {
+  border-radius: 2vh;
 }
 
 /*h1 {*/

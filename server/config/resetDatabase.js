@@ -39,4 +39,6 @@ const concerts = [
 ];
 
 const collectionRef = db.collection("concerts");
+await collectionRef.deleteMany();
 await collectionRef.insertMany(concerts);
+console.log("db-reset!");

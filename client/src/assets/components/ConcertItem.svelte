@@ -4,8 +4,6 @@
     export let concert;
     export let isButton;
     import myImage from '/src/public/perkupa1c.png';
-    import {api} from "../../api/axios.js";
-    import {socket} from "../../api/socketIo.js";
     const dateObject = new Date(concert.dateTime);
     let cTime = dateObject.getHours().toString().padStart(2, '0') + ":" +
         dateObject.getMinutes().toString().padStart(2, '0');

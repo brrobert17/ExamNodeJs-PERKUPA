@@ -1,7 +1,9 @@
 <script>
-    import {api} from "../../api/axios.js";
+    import imgPlaceholder from '/src/public/placeholder-image.png';
+    import {createEventDispatcher} from "svelte";
 
     let avatar, fileInput, base64Image;
+    const dispatch = createEventDispatcher();
 
     const onFileSelected = (e) => {
         let image = e.target.files[0];
@@ -10,42 +12,24 @@
         reader.onload = (e) => {
             avatar = e.target.result;
             base64Image = e.target.result.split(',')[1];
+            dispatch('imageSelected', base64Image);
         };
     };
 
-    async function handleUpload() {
-        const formData = new FormData();
-        formData.append('file', base64Image);
 
-        await api.post('/test/images', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-            .then(({ data }) => console.log(data));
-    }
 </script>
 <div id="app">
-    <h1>Upload Image</h1>
-
     {#if avatar}
-        <img class="avatar" src="{avatar}" alt="d" />
+        <img class="avatar" src="{avatar}" alt="d"/>
     {:else}
         <img
                 class="avatar"
-                src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-                alt=""
+                src={imgPlaceholder}
+                style="background-color: #4f4f4f; width: 25vw; height: 25vh; margin-bottom: 3vh"
+                alt="placeholder"
         />
     {/if}
-    <img
-            class="upload"
-            src="https://static.thenounproject.com/png/625182-200.png"
-            alt=""
-            on:click={() => {
-            fileInput.click();
-        }}
-    />
-    <div class="chan" on:click={() => { fileInput.click(); }}>Choose Image</div>
+    <button class="login-button" on:click={() => { fileInput.click(); }}>Choose Image</button>
     <input
             style="display:none"
             type="file"
@@ -53,7 +37,6 @@
             on:change={(e) => onFileSelected(e)}
             bind:this={fileInput}
     />
-    <button on:click={handleUpload}>upload</button>
 </div>
 <style>
     #app {
@@ -61,13 +44,6 @@
         align-items: center;
         justify-content: center;
         flex-flow: column;
-    }
-
-    .upload {
-        display: flex;
-        height: 50px;
-        width: 50px;
-        cursor: pointer;
     }
     .avatar {
         display: flex;

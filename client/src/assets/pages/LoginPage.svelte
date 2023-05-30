@@ -2,8 +2,8 @@
     import toast, {Toaster} from "svelte-french-toast";
     import {navigate} from "svelte-navigator";
     import {api} from "../../api/axios.js";
-    import {authStore, logIn} from "../stores/globalStore.js";
-    import Navbar from "../components/Navbar.svelte";
+    import {logIn} from "../stores/globalStore.js";
+    import './styles/loginRegister.css'
 
     let user = {
         username: "",
@@ -15,7 +15,7 @@
         if (result.data.user) {
             console.log("user logIn: ", result.data);
             logIn(result.data.user, result.data.token);
-            toast.success("login confirmed");
+            toast.success(`login confirmed: Welcome ${result.data.user.username}!`);
             setTimeout(() => navigate(localStorage.getItem('ticket') ? "/ticket" : "/user"), 1000);
         } else {
             toast.error("unsuccessful login")
@@ -24,8 +24,6 @@
 </script>
 <div class="page-content">
     <div class="c-div">
-        <div class="login-div">
-            <h1 class="login-title">Login</h1>
             <div class="form-div">
                 <form>
                     <div>
@@ -39,11 +37,10 @@
                 </form>
                 <div>
                     <button class="login-button" on:click={handleLogin}>
-                        LogIn
+                        LOGIN
                     </button>
                 </div>
             </div>
-        </div>
     </div>
     <Toaster/>
 </div>

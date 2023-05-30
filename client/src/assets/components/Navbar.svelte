@@ -1,5 +1,5 @@
 <script>
-    import {getToken, getUser, invalidateUser, logOut} from "../stores/globalStore.js";
+    import {getToken, getUser, invalidateUser, logIn, logOut} from "../stores/globalStore.js";
     import {Toaster} from "svelte-french-toast";
     import {onMount} from "svelte";
     import {api} from "../../api/axios.js";
@@ -29,11 +29,13 @@
             console.log("navbarlog", user);
         }
         console.log("tokenNavAuth",getToken())
-        const response = await api.get("/auth", {
+        await api.get("/auth", {
             headers: {
                 Authorization: getToken()
             }
-        }).then(()=> {
+        }).then((response)=> {
+            console.log(response.data);
+                logIn(response.data.user, response.data.token);
                 sessionUser = getUser();
         }).catch(error => {
             console.log(error);
@@ -72,6 +74,11 @@
                     <p></p>
                 {/if}
             </li>
+            {#if sessionUser && sessionUser.admin}
+                <li class={activeTab === 'admin' ? 'active' : ''}>
+                    <a href="/admin">ADMIN</a>
+                </li>
+            {/if}
             <li class={activeTab === 'register' ? 'active' : ''}>
                 {#if !sessionUser}
                     <a href="/register">Register</a>
@@ -102,6 +109,7 @@
     }
 
     .navbar {
+        min-width: 600px;
         width: 100vw;
         box-sizing: border-box;
         background-color: #2f2f2f

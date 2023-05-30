@@ -9,6 +9,7 @@
     import MerchPage from "./assets/pages/MerchPage.svelte";
     import RecordsPage from "./assets/pages/RecordsPage.svelte";
     import TicketPage from "./assets/pages/TicketPage.svelte";
+    import AdminPage from "./assets/pages/AdminPage.svelte";
 </script>
 <Router>
     <Route path="/" primary={false}>
@@ -18,6 +19,10 @@
     <Route path="register" primary={false}>
         <Navbar activeTab="register" profile={true}/>
         <RegisterPage/>
+    </Route>
+    <Route path="admin" primary={false}>
+        <Navbar activeTab="admin" profile={true}/>
+        <AdminPage/>
     </Route>
     <Route path="login" primary={false}>
         <Navbar activeTab="login" profile={true}/>
