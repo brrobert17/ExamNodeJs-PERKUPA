@@ -1,5 +1,6 @@
 import toast from "svelte-french-toast";
 import {navigate} from "svelte-navigator";
+import {writable} from "svelte/store";
 
 export const getToken = () => {
     return localStorage.getItem('token');
@@ -24,6 +25,6 @@ export const logOut = () => {
     localStorage.setItem('user', "");
     localStorage.setItem('token', "");
     toast.success("logged out successfully");
-    setTimeout(()=>location.reload(), 500);
+    //setTimeout(()=>location.reload(), 500);
     setTimeout(()=>navigate("/"),500);
 }

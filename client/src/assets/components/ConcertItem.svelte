@@ -3,7 +3,9 @@
 
     export let concert;
     export let isButton;
+    export let owned = 0;
     import myImage from '/src/public/perkupa1c.png';
+
     const dateObject = new Date(concert.dateTime);
     let cTime = dateObject.getHours().toString().padStart(2, '0') + ":" +
         dateObject.getMinutes().toString().padStart(2, '0');
@@ -14,23 +16,27 @@
         navigate("/ticket");
     }
 </script>
-<div class="single-concert-grid">
+<div class="single-concert-grid" >
     <div class="img-div">
-        <img src={myImage} alt="myImg" style="height: 20vh"/>
+        <img src={concert.img || myImage} alt="myImg" style="height: 20vh"/>
     </div>
     <div class="date-time-div">
         <p>{cTime}</p>
         <p>{cDate}</p>
         {#if isButton}
-        <button class="ticket-button" on:click={buyTicket}>
-            Buy tickets</button>
-            {/if}
+            <button class="ticket-button" on:click={buyTicket}>
+                Buy tickets
+            </button>
+        {/if}
     </div>
     <div class="">
         <p class="concert-title">{concert.title.toUpperCase()}</p>
         <p>Venue: {concert.venue}</p>
         <p>Entrance: {concert.price} DKK</p>
         <p>Tickets left: {concert.tickets} pcs</p>
+        {#if owned > 0}
+            <p>Tickets owned: {owned} pcs</p>
+        {/if}
     </div>
 
 </div>
@@ -40,6 +46,7 @@
         font-size: large;
         font-weight: 700;
     }
+
     .single-concert-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 2fr 3fr;
@@ -49,20 +56,24 @@
         align-items: center;
         background-color: #191919;
     }
+
     .img-div {
         display: flex;
         margin-left: 2vw;
     }
+
     .date-time-div {
         text-align: center;
         min-width: 105px;
         font-weight: 700;
         font-size: 2vh;
     }
+
     .details-div {
         display: flex;
         flex-direction: column;
     }
+
     .ticket-button {
         background-color: #3D58F2;
         font-size: 2vh;

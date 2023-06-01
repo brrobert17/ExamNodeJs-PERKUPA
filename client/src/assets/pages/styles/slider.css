@@ -1,0 +1,68 @@
+.mySplideImage {
+    object-fit: cover;
+    width: 100%;
+}
+
+.img-gradient {
+    position: relative;
+    object-fit: cover;
+    height: fit-content;
+    max-width: 100%;
+}
+
+.img-gradient::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 62vh;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.192) 0%, rgba(0, 0, 0, 0.8) 56.25%);
+}
+
+.hero-slider .splide__arrow svg {
+    fill: #686868 !important;
+    height: 1.7vw !important;
+    width: 1.7vw !important;
+}
+.spilde__pagination__page {
+    background-color: #686868 !important;
+}
+
+.hero-slider .splide__arrow {
+    background: none;
+}
+
+.sliderTextContainer {
+    position: absolute;
+    /*text-align: left;*/
+    color: white;
+    left: 5.5%;
+    bottom: -5%;
+    z-index: 1;
+}
+
+.sliderTextContainerHeader {
+    width: 100%;
+    height: auto;
+    font-weight: 700;
+    font-size: 5vh;
+    letter-spacing: 1.3vw;
+}
+.sc-container {
+    position: relative;
+}
+
+.sc-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 97%;
+    z-index: 1; /* Place the overlay above the iframe */
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.192) 0%, rgba(0, 0, 0, 0.8) 56.25%);
+    pointer-events: none; /* Make sure the overlay doesn't intercept the click events */
+}
+
+
+

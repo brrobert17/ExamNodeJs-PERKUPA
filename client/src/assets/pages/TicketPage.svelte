@@ -13,20 +13,18 @@
     const buyTicket = async () => {
         if (confirm(`Are you sure you want to buy ${ticketNumber} ticket(s) to the ${concert.title.toUpperCase()}
         for ${ticketNumber * concert.price} DKK ?`)) {
-            console.log(concert);
-            console.log(user);
             await api.patch(`/concerts/ticket/${concert._id}`, {
                 concert: concert,
                 user: user,
                 pcs: ticketNumber
             }).then(response => {
-                console.log(response.data.message);
                 if (response.data.message) {
                     toast.success("Congratulations for your tickets! Enjoy the show!");
                     localStorage.removeItem('ticket');
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
                     setTimeout(()=> {
-                        navigate("/");
-                        window.open(response.data.emailUrl);
+                        //window.open(response.data.emailUrl);
+                        navigate(`/user/#${concert._id}`);
                     }, 1000);
                 }
             }).catch(err => {

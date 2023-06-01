@@ -5,7 +5,12 @@
     import 'flatpickr/dist/flatpickr.min.css';
     import {onMount} from "svelte";
     import toast, {Toaster} from "svelte-french-toast";
+    import {navigate} from "svelte-navigator";
+    import {getUser} from "../stores/globalStore.js";
 
+    const user = getUser();
+
+    const defaultDate = new Date().toISOString();
     let selectedDate;
     let base64Image;
     let concert = {
@@ -13,11 +18,13 @@
         venue: "",
         tickets: 0,
         price: 0,
-        dateTime: new Date().toISOString()
+        dateTime: defaultDate
     };
     const options = {
         time_24hr: true,
-        dateFormat: "Y-m-d @ H:i",
+        altInput: true,
+        altFormat: "Y. F j - H:i ",
+        dateFormat: "Y-m-dTH:i",
         enableTime: true,
     };
 
@@ -29,32 +36,52 @@
     });
 
     const handleImageSelect = (data) => {
-        console.log(data);
         base64Image = data.detail;
     }
 
+    async function validateAndUpload() {
+        if(!base64Image) {
+            toast.error("please choose an image!");
+        }
+        else if(!concert.title || !concert.venue || concert.price === 0 || concert.tickets === 0 || concert.dateTime === defaultDate) {
+            toast.error("please fill out all the fields of the form!")
+        }
+        else {
+            await handleUpload();
+        }
+    }
+
     async function handleUpload() {
+
         //upload img to firebaseStorage and get downloadUrl
         const formData = new FormData();
         formData.append('file', base64Image);
-        const imgRes = await toast.promise(api.post('/test/images', formData, {
+        let imgUrl;
+        await toast.promise(api.post('/test/images', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
-        }).catch(console.error), {
+        }).then(res => imgUrl = res.data.url), {
             loading: 'Uploading image...',
             success: 'Image uploaded successfully!',
             error: 'Failed to upload image.'
         });
-        const imgUrl = imgRes.data.url;
-        console.log("img: ",imgUrl);
+
         //create concert in the database
-        const docRes = await api.post('/concerts', {...concert, img: imgUrl}).catch(console.error);
-        console.log("doc: ",docRes.data);
+        if(imgUrl) {
+            await toast.promise(api.post('/concerts', {...concert, img: imgUrl}).then(()=> {
+                setTimeout(()=>navigate("/live"), 1000)
+            }).catch(console.error),{
+                loading: 'creating concert...',
+                success: 'Concert created successfully',
+                error: 'Failed to create concert.'
+            });
+        }
     }
 
 </script>
 <div class="page-content">
+    {#if user && user.admin}
     <h1>Admin Options:</h1>
     <h3>New Concert +</h3>
     <div class="new-concert-grid">
@@ -81,10 +108,14 @@
                     <input class="form-input" type="text" id="datepicker" placeholder="Select a date" bind:value={concert.dateTime}/>
                 </div>
             </form>
-                <button class="login-button" style="width: 98%; margin-left: 3vw; border-radius: 2vh" on:click={handleUpload}>CREATE!</button>
+                <button class="login-button" style="width: 98%; margin-left: 3vw; border-radius: 2vh; margin-bottom: 3vh"
+                        on:click={validateAndUpload}>CREATE!</button>
         </div>
         <ImageInput on:imageSelected={handleImageSelect}/>
     </div>
+        {:else}
+        <h1>You need admin authority to view this page!</h1>
+        {/if}
 </div>
 <Toaster/>
 <style>
@@ -96,6 +127,7 @@
         grid-row-gap: 3vh;
         align-items: center;
         background-color: #191919;
+        padding-top: 2vh;
     }
     .form-group {
         margin-bottom: 2vh;

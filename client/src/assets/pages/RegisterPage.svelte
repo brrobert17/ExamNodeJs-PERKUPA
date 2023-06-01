@@ -21,7 +21,6 @@
             setTimeout(() => location.reload(), 1500);
         }
         else {
-            console.log(result);
             toast.success("registration confirmed");
             setTimeout(() => navigate("/login"), 1500);
         }

@@ -26,17 +26,16 @@
     onMount(async () => {
         const user = getUser();
         if(user) {
-            console.log("navbarlog", user);
+            console.log("Auth: valid token for user: ", user.username);
         }
-        console.log("tokenNavAuth",getToken())
         await api.get("/auth", {
             headers: {
                 Authorization: getToken()
             }
         }).then((response)=> {
-            console.log(response.data);
                 logIn(response.data.user, response.data.token);
-                sessionUser = getUser();
+                //sessionUser = getUser();
+            sessionUser = response.data.user;
         }).catch(error => {
             console.log(error);
             invalidateUser();
@@ -110,7 +109,7 @@
 
     .navbar {
         min-width: 600px;
-        width: 100vw;
+        width: 98.7vw;
         box-sizing: border-box;
         background-color: #2f2f2f
     }

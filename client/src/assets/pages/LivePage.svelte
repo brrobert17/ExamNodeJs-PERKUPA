@@ -16,7 +16,7 @@
     })
 </script>
 <div class="page-content">
-    <h1>Live</h1>
+    <h1>PERKUPA LIVE SHOWS</h1>
     <div class="concerts-grid" style="--concerts-length: {concerts.length}">
         {#each concerts as concert}
             <ConcertItem concert={concert} isButton={true}/>

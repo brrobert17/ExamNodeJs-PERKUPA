@@ -7,10 +7,12 @@ import {deleteImage, uploadImage} from "../service/firebaseStorageService.js";
 import {createDoc, deleteDocById, readDocById, readDocs, updateDocById} from "../service/mongoDBService.js";
 
 const router = Router();
-const upload = multer().single('image');
+
+const upload = multer({limits: { fieldSize: 25 * 1024 * 1024 }}).single('image');
 
 router.get("/test", (req, res) => {
-    res.send({data: giveCurrentDateTime()});
+    //res.send({data: giveCurrentDateTime()});
+    res.status(500).send({message: "nope"})
 })
 router.get("/test/docs", async (req, res) => {
     const docs = await readDocs("testCollection").catch((error) => {
@@ -63,11 +65,10 @@ router.get("/test/images", async (req, res) => {
 })
 
 router.post("/test/images", upload, async (req, res) => {
-    const result = await uploadImage(req.body.file).catch((error) => {
+    await uploadImage(req.body.file).then(result => res.send(result)).catch((error) => {
         console.log(error);
-        res.status(418).send(error);
+        res.status(500).send( error);
     });
-    res.send(result);
 });
 
 router.delete("/test/images/:filename", async (req, res) => {

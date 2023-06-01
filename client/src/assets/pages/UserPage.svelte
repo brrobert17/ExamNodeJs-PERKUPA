@@ -1,70 +1,33 @@
 <script>
-    import {onMount} from "svelte";
-    import toast, {Toaster} from "svelte-french-toast";
     import {api} from "../../api/axios.js";
-    import {getToken, getUser, logOut} from "../stores/globalStore.js";
+    import ConcertItem from "../components/ConcertItem.svelte";
+    import {getUser} from "../stores/globalStore.js";
+    import {onMount} from "svelte";
 
-    let auth = false;
-    let email = {
-        subject: "",
-        text: "",
-        from: ""
-    }
-    let sessionUser = getUser();
+    const user = getUser();
+    let tickets = user.tickets;
+    let concerts = [];
 
-
-    async function handleContact() {
-        // const response = await fetch($BASE_URL + "/email", {
-        //     credentials: "include",
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json;charset=utf-8'
-        //     },
-        //     body: JSON.stringify(email)
-        // });
-        //const {url} = await response.json();
-        //if (response.status === 416) {
-        //  toast.error("error sending email");
-        //} else {
-        //  toast.success("email successfully sent");
-        //document.getElementById("f1").reset();
-        //setTimeout(() => window.open(url), 1500);
-        //}
-    }
+    onMount(async () => {
+        if (tickets && Array.isArray(tickets) && tickets.length > 0) {
+            for (const ticket of tickets) {
+                const res = await api.get(`/concerts/${ticket.concertId}`).catch(err => console.log(err));
+                concerts = [...concerts, res.data];
+            }
+        }
+    });
 </script>
 <div class="page-content">
-    {#if (!sessionUser)}
-        <h1>Log in to view this page!</h1>
-    {:else}
-        <h1>Welcome {sessionUser.username}</h1>
-        <button on:click={logOut}>Logout</button>
-        <div class="c-div">
-            <div class="login-div" style="min-height: 600px">
-                <h1 class="login-title">Contact</h1>
-                <div class="form-div">
-                    <form id="f1">
-                        <div>
-                            <label for="un">email</label>
-                            <input id="un" bind:value={email.from} type="email" placeholder="your email address">
-                        </div>
-                        <div>
-                            <label for="pw">subject</label>
-                            <input id="pw" bind:value={email.subject} type="text" placeholder="subject">
-                        </div>
-                        <div>
-                            <label for="tx">text</label>
-                            <textarea id="tx" cols="10" rows="10" bind:value={email.text}
-                                      placeholder="write your email here"></textarea>
-                        </div>
-                    </form>
-                    <div>
-                        <button class="login-button" on:click={handleContact}>
-                            Send
-                        </button>
-                    </div>
-                </div>
-            </div>
+    {#if user}
+        <h1>{user.username}'s tickets:</h1>
+        <div class="concerts-grid" style="--concerts-length: {concerts.length}">
+            {#each concerts as concert}
+                <br id={concert._id}>
+                <ConcertItem concert={concert} isButton={false}
+                             owned={user.tickets.find(ticket => ticket.concertId === concert._id).pcs}/>
+            {/each}
         </div>
+    {:else}
+        <h1>Log in to view this page</h1>
     {/if}
-    <Toaster/>
 </div>

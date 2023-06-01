@@ -11,15 +11,13 @@
     }
 
     async function handleLogin() {
-        const result = await api.post('/login', {"user": user});
-        if (result.data.user) {
-            console.log("user logIn: ", result.data);
-            logIn(result.data.user, result.data.token);
-            toast.success(`login confirmed: Welcome ${result.data.user.username}!`);
+        await api.post('/login', {"user": user}).then(response => {
+            logIn(response.data.user, response.data.token);
+            toast.success(`Welcome ${response.data.user.username}!`);
             setTimeout(() => navigate(localStorage.getItem('ticket') ? "/ticket" : "/user"), 1000);
-        } else {
-            toast.error("unsuccessful login")
-        }
+        }).catch((err)=> {
+            toast.error(err.response.data.error);
+        });
     }
 </script>
 <div class="page-content">

@@ -19,7 +19,7 @@ async function sendMail(email, text) {
         subject: "PERKUPA BAND LIVE ticket purchase",
         text: text
     });
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     return(nodemailer.getTestMessageUrl(info));
 }
 
