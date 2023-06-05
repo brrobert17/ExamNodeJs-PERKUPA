@@ -1,0 +1,19 @@
+.new-concert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(1, 1fr);
+    grid-column-gap: 3vw;
+    grid-row-gap: 3vh;
+    align-items: center;
+    background-color: #191919;
+    padding-top: 2vh;
+}
+.form-group {
+    margin-bottom: 2vh;
+    margin-left: 3vw;
+}
+
+.form-input {
+    width: 100%;
+    padding: 1vh;
+}

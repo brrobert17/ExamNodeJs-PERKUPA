@@ -3,6 +3,7 @@
     import ImageInput from "../components/ImageInput.svelte";
     import flatpickr from 'flatpickr';
     import 'flatpickr/dist/flatpickr.min.css';
+    import './styles/form.css'
     import {onMount} from "svelte";
     import toast, {Toaster} from "svelte-french-toast";
     import {navigate} from "svelte-navigator";
@@ -57,7 +58,7 @@
         const formData = new FormData();
         formData.append('file', base64Image);
         let imgUrl;
-        await toast.promise(api.post('/test/images', formData, {
+        await toast.promise(api.post('/concerts/image', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -71,8 +72,8 @@
         if(imgUrl) {
             await toast.promise(api.post('/concerts', {...concert, img: imgUrl}).then(()=> {
                 setTimeout(()=>navigate("/live"), 1000)
-            }).catch(console.error),{
-                loading: 'creating concert...',
+            }),{
+                loading: 'Creating new concert...',
                 success: 'Concert created successfully',
                 error: 'Failed to create concert.'
             });
@@ -118,24 +119,3 @@
         {/if}
 </div>
 <Toaster/>
-<style>
-    .new-concert-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: repeat(1, 1fr);
-        grid-column-gap: 3vw;
-        grid-row-gap: 3vh;
-        align-items: center;
-        background-color: #191919;
-        padding-top: 2vh;
-    }
-    .form-group {
-        margin-bottom: 2vh;
-        margin-left: 3vw;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 1vh;
-    }
-</style>

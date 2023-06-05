@@ -1,0 +1,26 @@
+.contact-div {
+    background-color: #191919;
+    width: 40vw;
+    padding: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: 5vh auto 0 auto;
+
+}
+
+.input-cont {
+    display: flex;
+    flex-direction: column;
+}
+
+#tx {
+    padding: .8em;
+    font-family: inherit;
+
+}
+
+.login-button-cont {
+    padding: 2em 0 0 0;
+}

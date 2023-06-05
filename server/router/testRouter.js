@@ -1,19 +1,16 @@
 import {Router} from "express";
 import {storageImagesRef} from "../config/firebase.js";
 import {ref, getDownloadURL} from "firebase/storage";
-import multer from 'multer';
-import {giveCurrentDateTime} from "../utils/utils.js";
-import {deleteImage, uploadImage} from "../service/firebaseStorageService.js";
+import {deleteImage} from "../service/firebaseStorageService.js";
 import {createDoc, deleteDocById, readDocById, readDocs, updateDocById} from "../service/mongoDBService.js";
 
 const router = Router();
 
-const upload = multer({limits: { fieldSize: 25 * 1024 * 1024 }}).single('image');
+
 
 router.get("/test", (req, res) => {
-    //res.send({data: giveCurrentDateTime()});
-    res.status(500).send({message: "nope"})
-})
+    res.send({ message: '<h1>test</h1>' });
+});
 router.get("/test/docs", async (req, res) => {
     const docs = await readDocs("testCollection").catch((error) => {
         console.log(error);
@@ -64,12 +61,7 @@ router.get("/test/images", async (req, res) => {
 
 })
 
-router.post("/test/images", upload, async (req, res) => {
-    await uploadImage(req.body.file).then(result => res.send(result)).catch((error) => {
-        console.log(error);
-        res.status(500).send( error);
-    });
-});
+
 
 router.delete("/test/images/:filename", async (req, res) => {
     await deleteImage(req.params.filename).catch((error) => {

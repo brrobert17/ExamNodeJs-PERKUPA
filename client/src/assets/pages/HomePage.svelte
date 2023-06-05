@@ -1,23 +1,17 @@
 <script>
-    import {onMount} from "svelte";
-    import {api} from "../../api/axios.js";
     import {Splide, SplideSlide} from "@splidejs/svelte-splide";
     import '@splidejs/svelte-splide/css';
     import './styles/slider.css'
-    import toast, {Toaster} from "svelte-french-toast";
+    import PageTitle from "../components/PageTitle.svelte";
 
     let images = [];
-    for (let i = 1; i < 14; i++) {
+    for (let i = 1; i < 16; i++) {
         images.push(`/src/public/sliderImages/img-per${i}.png`)
     }
 
 </script>
-<div class="title-box">
-    <div class="title-box-overlay"></div>
-    <p class="perkupa-title">PERKUPA BAND</p>
-</div>
 <div class="page-content">
-    <div style="position: relative; margin-top: 5vh">
+    <div style="position: relative; margin-top: 10vh">
         <Splide class={"hero-slider"}
                 options={{
                     type: 'loop',
@@ -42,42 +36,15 @@
 
         </Splide>
     </div>
+</div>
+<PageTitle title="LISTEN HERE"/>
+<div class="page-content">
     <div style="margin-top: 5vh" class="sc-container">
         <div class="sc-overlay"></div>
         <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
                 src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1511176231&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
         </iframe>
     </div>
-
-
-
 </div>
-<Toaster/>
-<style>
-    .perkupa-title {
-        font-size: 4vh;
-        font-weight: 1000;
-        letter-spacing: 5vw;
-        line-height: 4vh;
-    }
 
-    .title-box {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #191919;
-        padding: 2vh 3vw 2vh 3vw;
-    }
-    .title-box-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* Place the overlay above the iframe */
-        background: linear-gradient(180deg, rgba(0, 0, 0, 0.07) 0%, rgba(0, 0, 0, 0.5) 56.25%);
-        pointer-events: none; /* Make sure the overlay doesn't intercept the click events */
-    }
-</style>
 

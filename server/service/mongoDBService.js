@@ -3,7 +3,7 @@ import {ObjectId} from "mongodb";
 
 export const readDocs = async (collection) => {
     const collectionRef = db.collection(collection);
-    return await collectionRef.find().toArray();
+    return await collectionRef.find().sort({dateTime: 1}).toArray();
 };
 
 export const readDocById = async (collection, id) => {

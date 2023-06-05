@@ -3,15 +3,20 @@
     import toast, {Toaster} from "svelte-french-toast";
     import {api} from "../../api/axios.js";
     import {getToken, getUser, logOut} from "../stores/globalStore.js";
+    import './styles/form.css'
+    import './styles/contact.css'
 
-    let auth = false;
+    const user = getUser();
+
     let email = {
         subject: "",
         text: "",
         from: ""
     }
-    let sessionUser = getUser();
 
+    if (user) {
+        email.from = user.email;
+    }
 
     async function handleContact() {
         // const response = await fetch($BASE_URL + "/email", {
@@ -32,39 +37,31 @@
         //}
     }
 </script>
-<div class="page-content">
-    {#if (!sessionUser)}
-        <h1>Log in to view this page!</h1>
-    {:else}
-        <h1>Welcome {sessionUser.username}</h1>
-        <button on:click={logOut}>Logout</button>
-        <div class="c-div">
-            <div class="login-div" style="min-height: 600px">
-                <h1 class="login-title">Contact</h1>
-                <div class="form-div">
-                    <form id="f1">
-                        <div>
-                            <label for="un">email</label>
-                            <input id="un" bind:value={email.from} type="email" placeholder="your email address">
-                        </div>
-                        <div>
-                            <label for="pw">subject</label>
-                            <input id="pw" bind:value={email.subject} type="text" placeholder="subject">
-                        </div>
-                        <div>
-                            <label for="tx">text</label>
-                            <textarea id="tx" cols="10" rows="10" bind:value={email.text}
-                                      placeholder="write your email here"></textarea>
-                        </div>
-                    </form>
-                    <div>
-                        <button class="login-button" on:click={handleContact}>
-                            Send
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {/if}
-    <Toaster/>
+<div class="title-box">
+    <div class="title-box-overlay"></div>
+    <p class="perkupa-title" style="letter-spacing: 3vw">CONTACT PERKUPA</p>
 </div>
+<div class="page-content">
+    <div class="contact-div">
+        <div class="input-cont">
+            <label for="un">email</label>
+            <input class="" id="un" bind:value={email.from} type="email" placeholder="your email address">
+        </div>
+        <div class="input-cont">
+            <label for="pw">subject</label>
+            <input class="" id="pw" bind:value={email.subject} type="text" placeholder="subject">
+        </div>
+        <div class="input-cont">
+            <label for="tx">message</label>
+            <textarea id="tx" cols="45" rows="10" bind:value={email.text}
+                      placeholder="write your email here"></textarea>
+        </div>
+
+        <div  class="login-button-cont">
+            <button class="login-button" style="width: 100%" on:click={handleContact}>
+                Send
+            </button>
+        </div>
+    </div>
+</div>
+<Toaster/>

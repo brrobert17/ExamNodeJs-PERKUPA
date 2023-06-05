@@ -16,7 +16,7 @@ export const logIn = (user, token) => {
 };
 
 export const invalidateUser = () => {
-    console.log("token expired, user invalidated");
+    //console.log("token expired, user invalidated");
     localStorage.setItem('user', "");
     localStorage.setItem('token', "");
 }
@@ -25,6 +25,5 @@ export const logOut = () => {
     localStorage.setItem('user', "");
     localStorage.setItem('token', "");
     toast.success("logged out successfully");
-    //setTimeout(()=>location.reload(), 500);
     setTimeout(()=>navigate("/"),500);
 }

@@ -1,10 +1,13 @@
 import {Router} from "express";
 import {createDoc, readDocById, updateDocById} from "../service/mongoDBService.js";
 import sendMail from "../config/nodemailer.js";
+import {uploadImage} from "../service/firebaseStorageService.js";
+import multer from "multer";
 
-export const concertsRouter = new Router();
+const router = new Router();
+const upload = multer({limits: { fieldSize: 25 * 1024 * 1024 }}).single('image');
 
-concertsRouter.patch("/concerts/ticket/:id", async (req, res) => {
+router.patch("/concerts/ticket/:id", async (req, res) => {
     let concert = req.body.concert;
     let user = req.body.user;
 
@@ -36,7 +39,14 @@ concertsRouter.patch("/concerts/ticket/:id", async (req, res) => {
     });
 });
 
-concertsRouter.post('/concerts', async (req, res) => {
+router.post("/concerts/image", upload, async (req, res) => {
+    await uploadImage(req.body.file).then(result => res.send(result)).catch((error) => {
+        console.log(error);
+        res.status(500).send(error);
+    });
+});
+
+router.post('/concerts', async (req, res) => {
     const doc = await createDoc('concerts', req.body).catch((err)=>{
         console.log(err);
         res.status(416).send({error: err});
@@ -44,7 +54,7 @@ concertsRouter.post('/concerts', async (req, res) => {
     res.send(doc);
 });
 
-concertsRouter.get('/concerts/:id', async (req, res)=> {
+router.get('/concerts/:id', async (req, res)=> {
     const concert = await readDocById('concerts', req.params.id).catch((err)=> {
         console.log(err);
         res.status(416).send({error: err});
@@ -53,4 +63,6 @@ concertsRouter.get('/concerts/:id', async (req, res)=> {
         res.status(404).send({message: 'not found'});
     }
     res.send(concert);
-})
+});
+
+export default router;

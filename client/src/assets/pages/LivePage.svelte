@@ -1,6 +1,5 @@
 <script>
     import ConcertItem from "../components/ConcertItem.svelte";
-    import {io} from "socket.io-client";
     import {onMount} from "svelte";
     import {socket} from "../../api/socketIo.js";
 
@@ -16,8 +15,7 @@
     })
 </script>
 <div class="page-content">
-    <h1>PERKUPA LIVE SHOWS</h1>
-    <div class="concerts-grid" style="--concerts-length: {concerts.length}">
+    <div class="concerts-grid" style="margin-top: 3vh; --concerts-length: {concerts.length}">
         {#each concerts as concert}
             <ConcertItem concert={concert} isButton={true}/>
         {/each}

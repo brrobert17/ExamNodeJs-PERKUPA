@@ -25,19 +25,17 @@
     let sessionUser;
     onMount(async () => {
         const user = getUser();
-        if(user) {
+        /*if(user) {
             console.log("Auth: valid token for user: ", user.username);
-        }
+        }*/
         await api.get("/auth", {
             headers: {
                 Authorization: getToken()
             }
         }).then((response)=> {
                 logIn(response.data.user, response.data.token);
-                //sessionUser = getUser();
-            sessionUser = response.data.user;
+                sessionUser = response.data.user;
         }).catch(error => {
-            console.log(error);
             invalidateUser();
         });
     });
@@ -46,17 +44,20 @@
 <div class="navbar" style="--a-tag-color: {aTagColor}">
     <ul>
         {#if !profile}
-            <li class={activeTab === 'home' ? 'active' : ''}>
-                <a href="/">Home</a>
-            </li>
+            <a href="/">
+                <li class={activeTab === 'home' ? 'active' : ''}>
+                    Home
+                </li>
+            </a>
+
             <li class={activeTab === 'live' ? 'active' : ''}>
                 <a href="/live">Live</a>
             </li>
-            <li class={activeTab === 'merch' ? 'active' : ''}>
-                <a href="/merch">Merch</a>
+            <li class={activeTab === 'shop' ? 'active' : ''}>
+                <a href="/shop">Shop</a>
             </li>
-            <li class={activeTab === 'records' ? 'active' : ''}>
-                <a href="/records">Records</a>
+            <li class={activeTab === 'contact' ? 'active' : ''}>
+                <a href="/contact">Contact</a>
             </li>
         {:else }
             <li class={activeTab === 'user' ? 'active' : ''}>
@@ -109,7 +110,7 @@
 
     .navbar {
         min-width: 600px;
-        width: 98.7vw;
+        //width: 98.7vw;
         box-sizing: border-box;
         background-color: #2f2f2f
     }

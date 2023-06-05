@@ -8,7 +8,7 @@ import authRouter from "./router/authRouter.js";
 import http from "http";
 import {Server} from "socket.io";
 import {readDocs} from "./service/mongoDBService.js";
-import {concertsRouter} from "./router/concertsRouter.js";
+import concertsRouter from "./router/concertsRouter.js";
 
 dotenv.config();
 const app = express();
@@ -23,7 +23,7 @@ app.use(session({
 }));
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:3000"
+    origin: "*"
 }));
 
 const server = http.createServer(app);

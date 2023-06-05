@@ -19,17 +19,16 @@
                 pcs: ticketNumber
             }).then(response => {
                 if (response.data.message) {
-                    toast.success("Congratulations for your tickets! Enjoy the show!");
+                    toast.success("Enjoy the show!");
                     localStorage.removeItem('ticket');
                     localStorage.setItem('user', JSON.stringify(response.data.user));
                     setTimeout(()=> {
-                        //window.open(response.data.emailUrl);
+                        window.open(response.data.emailUrl);
                         navigate(`/user/#${concert._id}`);
-                    }, 1000);
+                    }, 1500);
                 }
             }).catch(err => {
-                console.log(err);
-                toast.error("unsuccessful transaction, try again!")
+                toast.error("unsuccessful, try again!")
             });
 
         }
