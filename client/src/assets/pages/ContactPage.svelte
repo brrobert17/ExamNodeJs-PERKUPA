@@ -19,28 +19,20 @@
     }
 
     async function handleContact() {
-        // const response = await fetch($BASE_URL + "/email", {
-        //     credentials: "include",
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json;charset=utf-8'
-        //     },
-        //     body: JSON.stringify(email)
-        // });
-        //const {url} = await response.json();
-        //if (response.status === 416) {
-        //  toast.error("error sending email");
-        //} else {
-        //  toast.success("email successfully sent");
-        //document.getElementById("f1").reset();
-        //setTimeout(() => window.open(url), 1500);
-        //}
+        await toast.promise(api.post("/contact", email).then(res => {
+            setTimeout(() => {
+                email.subject = "";
+                email.from = "";
+                email.text = "";
+                window.open(res.data.emailUrl);
+            }, 1500)
+        }), {
+            loading: 'Sending email...',
+            success: 'Email sent successfully!',
+            error: 'Failed to send email.'
+        })
     }
 </script>
-<div class="title-box">
-    <div class="title-box-overlay"></div>
-    <p class="perkupa-title" style="letter-spacing: 3vw">CONTACT PERKUPA</p>
-</div>
 <div class="page-content">
     <div class="contact-div">
         <div class="input-cont">

@@ -9,6 +9,7 @@ import http from "http";
 import {Server} from "socket.io";
 import {readDocs} from "./service/mongoDBService.js";
 import concertsRouter from "./router/concertsRouter.js";
+import utilsRouter from "./router/utilsRouter.js";
 
 dotenv.config();
 const app = express();
@@ -45,5 +46,6 @@ io.on("connection",  (socket) => {
 app.use(testRouter);
 app.use(authRouter);
 app.use(concertsRouter);
+app.use(utilsRouter);
 
 server.listen(process.env.PORT, () => console.log("server running on port: " + process.env.PORT))

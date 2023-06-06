@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 
 
-async function sendMail(email, text) {
+async function sendMail(from, to, subject, text) {
 
     let transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
@@ -14,9 +14,9 @@ async function sendMail(email, text) {
     });
 
     let info = await transporter.sendMail({
-        from: "perkupa.tickets@perkupaband.com",
-        to: email,
-        subject: "PERKUPA BAND LIVE ticket purchase",
+        from: from,
+        to: to,
+        subject: subject,
         text: text
     });
     //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));

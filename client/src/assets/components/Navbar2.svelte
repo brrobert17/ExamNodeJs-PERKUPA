@@ -1,26 +1,53 @@
 <script>
     import {navigate} from "svelte-navigator";
-    import {logOut} from "../stores/globalStore.js";
+    import {getToken, getUser, invalidateUser, logIn, logOut} from "../stores/globalStore.js";
+    import {onMount} from "svelte";
+    import {api} from "../../api/axios.js";
 
     export let activeTab;
+
+    let sessionUser;
+    onMount(async () => {
+        await api.get("/auth", {
+            headers: {
+                Authorization: getToken()
+            }
+        }).then((response) => {
+            logIn(response.data.user, response.data.token);
+            sessionUser = response.data.user;
+        }).catch(error => {
+            invalidateUser();
+        });
+    });
 </script>
 <div>
     <ul class="navbar">
         <li class={activeTab === 'home' ? 'active li' : 'li'}
-        on:click={()=> navigate('/')}>home</li>
+            on:click={()=> navigate('/')}>home
+        </li>
         <li class={activeTab === 'live' ? 'active li' : 'li'}
-            on:click={()=> navigate('/live')}>live</li>
+            on:click={()=> navigate('/live')}>live
+        </li>
+
         <li class={activeTab === 'shop' ? 'active li' : 'li'}
-            on:click={()=> navigate('/shop')}>shop</li>
+            on:click={()=> navigate('/shop')}>shop
+        </li>
         <li class={activeTab === 'contact' ? 'active li' : 'li'}
-            on:click={()=> navigate('/contact')}>contact</li>
+            on:click={()=> navigate('/contact')}>contact
+        </li>
         <div class="li" id="drop-down">
             <li>myPerkupa</li>
             <ul class="drop-down-menu">
-                <li on:click={()=> navigate('/login')}>login</li>
-                <li on:click={logOut}>logout</li>
-                <li on:click={()=> navigate('/register')}>register</li>
-                <li on:click={()=> navigate('/admin')}>admin</li>
+                {#if !sessionUser}
+                    <li on:click={()=> navigate('/login')}>login</li>
+                    <li on:click={()=> navigate('/register')}>register</li>
+                {:else}
+                    <li on:click={logOut}>logout</li>
+                    <li on:click={()=> navigate('/user')}>tickets</li>
+                {/if}
+                {#if sessionUser && sessionUser.admin}
+                    <li on:click={()=> navigate('/admin')}>admin</li>
+                {/if}
             </ul>
         </div>
     </ul>
@@ -35,6 +62,7 @@
         cursor: pointer;
 
     }
+
     ul {
         margin: 0;
     }
@@ -48,6 +76,7 @@
         padding: 1.5em 0;
         width: 20%;
         text-align: center;
+        text-transform: uppercase;
 
     }
 

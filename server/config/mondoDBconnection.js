@@ -7,5 +7,7 @@ const client = new MongoClient(url);
 export const db = client.db("perkupa_db");
 export const usersCollection = db.collection('users');
 export const concertsCollection = db.collection('concerts');
+export const itemsCollection = db.collection('items');
+export const ordersCollection = db.collection('orders');
 export const testCollection = db.collection("testConnection");
 

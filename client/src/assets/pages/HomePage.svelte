@@ -3,6 +3,7 @@
     import '@splidejs/svelte-splide/css';
     import './styles/slider.css'
     import PageTitle from "../components/PageTitle.svelte";
+    import {Toaster} from "svelte-french-toast";
 
     let images = [];
     for (let i = 1; i < 16; i++) {
@@ -46,5 +47,6 @@
         </iframe>
     </div>
 </div>
+<Toaster/>
 
 

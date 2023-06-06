@@ -3,7 +3,7 @@
 </script>
 <div class="title-box">
     <div class="title-box-overlay"></div>
-    <p class="perkupa-title" style={title === "CONTACT PERKUPA" ? "letter-spacing: 4vw" : ""}>{title}</p>
+    <p class="perkupa-title" style={title === "CONTACT PERKUPA" || "TICKET TO PERKUPA" ? "letter-spacing: 4vw" : ""}>{title}</p>
 </div>
 <style>
     .perkupa-title {
@@ -27,8 +27,8 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 1; /* Place the overlay above the iframe */
+        z-index: 1;
         background: linear-gradient(180deg, rgba(0, 0, 0, 0.07) 0%, rgba(0, 0, 0, 0.5) 56.25%);
-        pointer-events: none; /* Make sure the overlay doesn't intercept the click events */
+        pointer-events: none;
     }
 </style>

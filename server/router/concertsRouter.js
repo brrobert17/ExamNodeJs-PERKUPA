@@ -29,9 +29,13 @@ router.patch("/concerts/ticket/:id", async (req, res) => {
     }
     user = {...user, tickets: userTickets};
     await updateDocById("users", user._id, {tickets: userTickets});
+
+    //send mail
     const text = `Dear ${user.username}! Congatulations to buying ${req.body.pcs} ticket(s) to ${concert.title}!
     We hope you will enjoy the show at ${concert.venue} on ${concert.dateTime}!`;
-    const url = await sendMail(user.email, text).catch(console.error);
+    const subject = "PERKUPA BAND LIVE ticket purchase";
+    const from = "perkupa.tickets@perkupaband.com";
+    const url = await sendMail(from, user.email, subject, text).catch(console.error);
     res.send({
         user: user,
         message: "success",

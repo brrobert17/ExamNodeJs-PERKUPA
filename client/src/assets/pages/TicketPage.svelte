@@ -8,7 +8,7 @@
     const concert = JSON.parse(localStorage.getItem('ticket'));
     let user = localStorage.getItem('user');
     user = user ? JSON.parse(user) : null
-    let ticketNumber = 0;
+    let ticketNumber = 1;
 
     const buyTicket = async () => {
         if (confirm(`Are you sure you want to buy ${ticketNumber} ticket(s) to the ${concert.title.toUpperCase()}
@@ -54,12 +54,17 @@
 
         </div>
     {:else}
-        <div class="c-div">
-            <div class="item-div">
+        <div class="c-div" >
+            <div class="item-div" style="text-align: center">
                 <h2>Please log in to continue</h2>
                 <button class="login-button"  on:click={()=> navigate("/login")}>
                     LOGIN</button>
+                <br>
+                <h2>Not a user yet?</h2>
+                <button class="login-button"  on:click={()=> navigate("/register")}>
+                    REGISTER</button>
             </div>
+
 
         </div>
     {/if}
@@ -68,8 +73,8 @@
 
 <style>
  .form-content {
-     margin-left: 10vw;
-     margin-top: 10vh;
+     margin-left: 15vw;
+     margin-top: 5vh;
  }
  .item-div {
      display: flex;
